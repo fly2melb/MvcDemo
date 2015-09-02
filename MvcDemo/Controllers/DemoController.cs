@@ -12,7 +12,6 @@ namespace MvcDemo.Controllers
             return View();
         }
 
-        [AllowAnonymous]
         [HttpPost, ValidateAntiForgeryToken]
         [ActionName("TwoSubmitButtons"), AcceptButtonName(Name = "Accept")]
         public ViewResult Accept(string message)
@@ -22,7 +21,6 @@ namespace MvcDemo.Controllers
             return View();
         }
 
-        [AllowAnonymous]
         [HttpPost, ValidateAntiForgeryToken]
         [ActionName("TwoSubmitButtons"), AcceptButtonName(Name = "Decline")]
         public ViewResult Decline(string message)
