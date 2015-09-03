@@ -1,0 +1,64 @@
+﻿@model MvcDemo.ViewModels.CascadingDropDownViewModel
+
+@{
+    ViewBag.Title = "Cascading drop-down list";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>
+    <span class="label label-info">@ViewBag.Message</span>
+</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.DropDownListFor(model =>
+            model.ContinentId, new SelectList(Model.ContinentList, "Key", "Value", Model.ContinentId),
+            "- Continent -", new { id = "continentId" })
+        @Html.ValidationMessageFor(m => m.ContinentId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.DropDownListFor(model =>
+            model.CountryId, new SelectList(Model.CountryList, "Key", "Value", Model.CountryId),
+            "- Country -", new { id = "countryId" })
+        @Html.ValidationMessageFor(m => m.CountryId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-sm btn-primary" />
+    </div>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+            // Update options of Country drop down list when Continent is changed.
+            $('#continentId').change(function () {
+                var url = '@Url.Action("GetCountries")';
+                var defaultOption = "- Country -";
+
+                $.getJSON(url + '/' + $('#continentId').val(), function (data) {
+                    var items = '<option value>' + defaultOption + '</option>';
+                    $.each(data, function (i, country) {
+                        // country.Value cannot contain ' character.
+                        items += "<option value='" + country.Value + "'>" + country.Text + "</option>";
+                    });
+                    $('#countryId').html(items);
+
+                }).fail(function () {
+                    // When failed, default option only
+                    var items = '<option value>' + defaultOption + '</option>';
+                    $('#countryId').html(items);
+                });
+            });
+        });
+    </script>
+}

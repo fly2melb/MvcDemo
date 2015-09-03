@@ -3,13 +3,18 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET MVC</h1>
+    <h1>ASP.NET MVC demo</h1>
 
     @*<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>*@
 
-    <p>
-        @Html.ActionLink("Two submit buttons", "TwoSubmitButtons", "Demo", new { }, new { @class = "btn btn-primary btn-lg" })
-    </p>
+    <ul>
+        <li>
+            @Html.ActionLink("Two submit buttons", "TwoSubmitButtons", "Demo", new { }, new { @class = "" })
+        </li>
+        <li>
+            @Html.ActionLink("Cascading drop-down list", "CascadingDropDown", "Demo", new { }, new { @class = "" })
+        </li>
+    </ul>
 </div>
 
 @*<div class="row">
