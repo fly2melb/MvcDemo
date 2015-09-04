@@ -9,7 +9,10 @@ namespace MvcDemo.Helpers
 
         public override bool IsValidName(ControllerContext controllerContext, string actionName, MethodInfo methodInfo)
         {
-            return controllerContext.Controller.ValueProvider.GetValue(Name) != null;
+            var provider = new FormValueProvider(controllerContext);
+            var value = provider.GetValue(Name);
+
+            return value != null;
         }
     }
 }
