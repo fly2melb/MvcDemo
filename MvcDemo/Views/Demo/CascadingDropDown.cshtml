@@ -39,26 +39,34 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script type="text/javascript">
-        $(function () {
-            // Update options of Country drop down list when Continent is changed.
-            $('#continentId').change(function () {
-                var url = '@Url.Action("GetCountries")';
-                var defaultOption = "- Country -";
+            $(function () {
+                // Reload options of Country drop down list when Continent is changed.
+                // Update values of 3 variables when re-using this method.
+                $('#continentId').change(function () {
+                    // Url of action to get options of child drop-down
+                    var url = '@Url.Action("Countries")/' + $('#continentId').val();
+                    // Element ID of child drop-down
+                    var dropDownId = 'countryId';
+                    // Default option of child drop-down
+                    var defaultOption = '- Country -';
 
-                $.getJSON(url + '/' + $('#continentId').val(), function (data) {
-                    var items = '<option value>' + defaultOption + '</option>';
-                    $.each(data, function (i, country) {
-                        // country.Value cannot contain ' character.
-                        items += "<option value='" + country.Value + "'>" + country.Text + "</option>";
+                    $.getJSON(url, function (data) {
+                        var items = '<option value>' + defaultOption + '</option>';
+
+                        $.each(data, function (i, item) {
+                            // Value cannot contain single quote (').
+                            items += '<option value="' + item.Value + '">' + item.Text + '</option>';
+                        });
+
+                        $('#' + dropDownId).html(items);
+
+                    }).fail(function () {
+                        // When failed, default option only
+                        var items = '<option value>' + defaultOption + '</option>';
+
+                        $('#' + dropDownId).html(items);
                     });
-                    $('#countryId').html(items);
-
-                }).fail(function () {
-                    // When failed, default option only
-                    var items = '<option value>' + defaultOption + '</option>';
-                    $('#countryId').html(items);
                 });
             });
-        });
     </script>
 }
